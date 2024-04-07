@@ -3,8 +3,11 @@
 
 #include <iostream>
 #include <vector>
+#include <functional>
 
-template <typename Key, typename Value>
+#include "../include/Random.h"
+
+template <typename Key, typename Value, typename Hash = std::hash<Key>, typename Comp = std::equal_to<Key>>
 class HashTable {
 	struct Pair {
 		Key key;
@@ -17,10 +20,8 @@ class HashTable {
 
 	std::vector<Pair> _data;
 	size_t _size;
-
-	size_t hash(const Key& key) {
-		return key % _data.size();
-	}
+	Hash hash_func;
+	Comp comparator;
 
 	void rehash() {
 		std::vector<Pair> new_data(_data.size() * 2);
@@ -32,13 +33,13 @@ class HashTable {
 	}
 
 	Pair* find(const Key& key) {
-		size_t start_index = hash(key);
-		if ((_data[start_index].key == key) && (!_data[start_index].node_empty)) {
+		size_t start_index = hash_func(key) % _data.size();
+		if (comparator(_data[start_index].key, key) && (!_data[start_index].node_empty)) {
 			return &_data[start_index];
 		}
 		size_t index = (start_index + 1) % _data.size();
 		while (index != start_index) {
-			if ((_data[index].key == key) && (!_data[index].node_empty)) {
+			if (comparator(_data[start_index].key, key) && (!_data[index].node_empty)) {
 				return &_data[index];
 			}
 			index = (index + 1) % _data.size();
@@ -82,7 +83,7 @@ public:
 		if (find(key)) {
 			return false;
 		}
-		size_t index = hash(key);
+		size_t index = hash_func(key) % _data.size();
 		while (!_data[index].node_empty) {
 			index = (index + 1) % _data.size();
 		}
@@ -100,7 +101,7 @@ public:
 		insert(key, value);
 	}
 
-	bool contains(const Key& key) const {
+	bool contains(const Key& key) {
 		return find(key);
 	}
 
