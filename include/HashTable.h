@@ -5,8 +5,6 @@
 #include <vector>
 #include <functional>
 
-#include "../include/Random.h"
-
 template <typename Key, typename Value, typename Hash = std::hash<Key>, typename Comp = std::equal_to<Key>>
 class HashTable {
 	struct Pair {

@@ -19,8 +19,10 @@ add_library(HashTable SHARED
     "src/HashTable.cc"
     "include/Random.h"
     "src/Random.cc"
-    "include/Task.h"
-    "src/Task.cc"
+    "include/Pearson_hash.h"
+    "src/Pearson_hash.cc"
+    "include/Compare_hash.h"
+    "src/Compare_hash.cc"
 )
 target_include_directories(HashTable PUBLIC "include")
 
