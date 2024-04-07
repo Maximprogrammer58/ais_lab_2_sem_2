@@ -2,6 +2,7 @@
 #include "../include/Pearson_hash.h"
 
 void save_hash_to_file(const std::string& message, const std::string& filename) {
+    PearsonHash  pearson_hash;
     std::ofstream file(filename);
     if (file.is_open()) {
         file << pearson_hash(message);
@@ -13,6 +14,7 @@ void save_hash_to_file(const std::string& message, const std::string& filename) 
 }
 
 bool compare_hash(const std::string& other_message, const std::string& filename) {
+    PearsonHash  pearson_hash;
     std::ifstream file(filename);
     if (file.is_open()) {
         size_t saved_hash;
@@ -27,5 +29,6 @@ bool compare_hash(const std::string& other_message, const std::string& filename)
 }
 
 bool compare_string_hash(const std::string& message, const std::string& other_message) {
+    PearsonHash  pearson_hash;
     return pearson_hash(message) == pearson_hash(other_message);
 }

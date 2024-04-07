@@ -3,8 +3,25 @@
 #include "include/Pearson_hash.h"
 #include "include/Compare_hash.h"
 
+struct StringEqual {
+    bool operator()(const std::string& a, const std::string& b) {
+        return a == b;
+    }
+};
+
 int main() {
+    // Проверка работы хеш-таблицы
+    HashTable<std::string, int, PearsonHash, StringEqual> table(10);
+    table.insert("a", 1);
+    table.insert("b", 2);
+    table.insert("d", 4);
+    table.insert("c", 3);
+    table.insert_or_assign("a", 2);
+    table.erase("c");
+    table.print();
+
     setlocale(LC_ALL, "Rus");
+    PearsonHash  pearson_hash;
     // Проверка хеш-функции Пирсона для строк
     std::string message, filename;
     std::cout << "Введите строку: ";
@@ -22,18 +39,6 @@ int main() {
         std::cout << "Хэши совпадают" << std::endl;
     else 
         std::cout << "Хэши не совпадают" << std::endl;
-
-    // Проверка работы хеш-таблицы
-    HashTable<int, int> table(10);
-    table.insert(1, 1);
-    table.insert(2, 2);
-    table.insert(4, 4);
-    table.insert(3, 3);
-    table.insert(0, 9);
-    table.erase(3);
-    table.insert(13, 9);
-    table.print();
-    std::cout << table[13] << std::endl;
  
     return 0;
 }
