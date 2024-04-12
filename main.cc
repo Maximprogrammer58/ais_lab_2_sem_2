@@ -12,7 +12,7 @@ int main() {
     table.insert(4, 4);
     table.print();
     table.insert(2, 2);
-    std::cout << table.contains(0) << std::endl;
+    std::cout << table.contains(-1) << std::endl;
     table.insert_or_assign(3, 3);
     table.insert(0, 0);
     table.erase(4);

@@ -9,7 +9,7 @@ void save_hash_to_file(const std::string& message, const std::string& filename) 
         file.close();
     }
     else {
-        std::cerr << "Ошибка открытия файла для записи" << std::endl;
+        std::cerr << "File opening error" << std::endl;
     }
 }
 
@@ -23,7 +23,7 @@ bool compare_hash(const std::string& other_message, const std::string& filename)
         return saved_hash == pearson_hash(other_message);
     }
     else {
-        std::cerr << "Ошибка открытия файла для чтения" << std::endl;
+        std::cerr << "File opening error" << std::endl;
         return false;
     }
 }

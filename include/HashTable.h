@@ -5,7 +5,7 @@
 #include <vector>
 #include <functional>
 
-template <typename Key, typename Value, typename Hash = std::hash<Key>, typename Comp_key = std::equal_to<Key>, typename Comp_value = std::equal_to<Key>>
+template <typename Key, typename Value, typename Hash = std::hash<Key>, typename Comp_key = std::equal_to<Key>, typename Comp_value = std::equal_to<Value>>
 class HashTable {
 	struct Pair {
 		Key key;
