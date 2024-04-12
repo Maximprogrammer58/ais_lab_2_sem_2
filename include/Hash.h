@@ -1,8 +1,12 @@
-#ifndef LAB_2_INCLUDE_PIRSON_HASH_H
-#define LAB_2_INCLUDE_PIRSON_HASH_H
+#ifndef LAB_2_INCLUDE_HASH_H
+#define LAB_2_INCLUDE_HASH_H
 
 #include <vector>
 #include <string>
+
+struct IntHash {
+    size_t operator()(int number);
+};
 
 struct PearsonHash {
     std::vector<size_t> pearson_table = {

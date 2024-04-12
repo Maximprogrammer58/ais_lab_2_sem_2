@@ -1,28 +1,37 @@
 #include "include/HashTable.h"
 #include "include/Random.h"
-#include "include/Pearson_hash.h"
+#include "include/Hash.h"
 #include "include/Compare_hash.h"
-
-struct StringEqual {
-    bool operator()(const std::string& a, const std::string& b) {
-        return a == b;
-    }
-};
+#include "../include/Equal.h"
 
 int main() {
-    // Проверка работы хеш-таблицы
-    HashTable<std::string, int, PearsonHash, StringEqual> table(10);
-    table.insert("a", 1);
-    table.insert("b", 2);
-    table.insert("d", 4);
-    table.insert("c", 3);
-    table.insert_or_assign("a", 2);
-    table.erase("c");
+    // Проверка работы хеш-таблицы (для int)
+    HashTable<int, int, IntHash> table(10);
+    table.insert(1, 1);
+    table.insert(3, -1);
+    table.insert(4, 4);
+    table.print();
+    table.insert(2, 2);
+    std::cout << table.contains(0) << std::endl;
+    table.insert_or_assign(3, 3);
+    table.insert(0, 0);
+    table.erase(4);
     table.print();
 
-    setlocale(LC_ALL, "Rus");
-    PearsonHash  pearson_hash;
+    // Проверка работы хеш-таблицы (по заданию для std::string)
+    HashTable<std::string, std::string, PearsonHash, StringEqual, StringEqual> string_table(10);
+    string_table.insert("ab", "z");
+    string_table.insert_or_assign("bc", "b");
+    string_table.insert("cd", "c");
+    string_table.print();
+    string_table["ab"] = "a";
+    std::cout << string_table.contains("b") << std::endl;
+    string_table.print();
+   
     // Проверка хеш-функции Пирсона для строк
+    setlocale(LC_ALL, "Rus");
+    PearsonHash pearson_hash;
+
     std::string message, filename;
     std::cout << "Введите строку: ";
     std::getline(std::cin, message);
@@ -32,7 +41,7 @@ int main() {
     std::cout << "Хэш строки " << message << " : " << pearson_hash(message) << std::endl;
     save_hash_to_file(message, filename);
 
-    std::string other_message = generateRandomString(5);
+    std::string other_message = generate_random_string(5);
     std::cout << "Хэш строки " << other_message << " : " << pearson_hash(other_message) << std::endl;
 
     if (compare_hash(other_message, filename)) 

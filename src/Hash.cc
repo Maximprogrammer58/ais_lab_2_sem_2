@@ -1,4 +1,8 @@
-#include "../include/Pearson_hash.h"
+#include "../include/Hash.h"
+
+size_t IntHash::operator()(int number) {
+    return number;
+}
 
 size_t PearsonHash::operator()(const std::string& message) {
     size_t result = 0;

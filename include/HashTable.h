@@ -5,7 +5,7 @@
 #include <vector>
 #include <functional>
 
-template <typename Key, typename Value, typename Hash = std::hash<Key>, typename Comp = std::equal_to<Key>>
+template <typename Key, typename Value, typename Hash = std::hash<Key>, typename Comp_key = std::equal_to<Key>, typename Comp_value = std::equal_to<Key>>
 class HashTable {
 	struct Pair {
 		Key key;
@@ -19,7 +19,8 @@ class HashTable {
 	std::vector<Pair> _data;
 	size_t _size;
 	Hash hash_func;
-	Comp comparator;
+	Comp_key comparator_key;
+	Comp_value comparator_value;	
 
 	void rehash() {
 		std::vector<Pair> new_data(_data.size() * 2);
@@ -32,12 +33,12 @@ class HashTable {
 
 	Pair* find(const Key& key) {
 		size_t start_index = hash_func(key) % _data.size();
-		if (comparator(_data[start_index].key, key) && (!_data[start_index].node_empty)) {
+		if (comparator_key(_data[start_index].key, key) && (!_data[start_index].node_empty)) {
 			return &_data[start_index];
 		}
 		size_t index = (start_index + 1) % _data.size();
 		while (index != start_index) {
-			if (comparator(_data[start_index].key, key) && (!_data[index].node_empty)) {
+			if (comparator_key(_data[start_index].key, key) && (!_data[index].node_empty)) {
 				return &_data[index];
 			}
 			index = (index + 1) % _data.size();
@@ -90,6 +91,13 @@ public:
 		return true;
 	}
 
+	bool contains(const Value& value) {
+		for (Pair& pair : _data)
+			if (comparator_value(pair.value, value) && (!pair.node_empty))
+				return true;
+		return false;
+	}
+
 	bool insert_or_assign(const Key& key, const Value& value) {
 		Pair* find_pair = find(key);
 		if (find_pair) {
@@ -97,10 +105,6 @@ public:
 			return false;
 		}
 		insert(key, value);
-	}
-
-	bool contains(const Key& key) {
-		return find(key);
 	}
 
 	Value operator[](const Key& key) const {

@@ -1,5 +1,5 @@
 #include "../include/Compare_hash.h"
-#include "../include/Pearson_hash.h"
+#include "../include/Hash.h"
 
 void save_hash_to_file(const std::string& message, const std::string& filename) {
     PearsonHash  pearson_hash;
